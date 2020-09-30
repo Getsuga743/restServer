@@ -1,4 +1,4 @@
-require("./config/config")
+require("./config/config");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -9,12 +9,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parser application/json
 app.use(bodyParser.json());
 
-
-
-
 app.get("/", function (req, res) {
-    res.write("hello")
-  });
+  res.redirect("/usuario");
+});
 
 app.get("/usuario", function (req, res) {
   res.json("get Usuario");
@@ -49,4 +46,3 @@ app.delete("/usuario", function (req, res) {
 app.listen(3000, () => {
   console.log("Escuchando puerto: " + process.env.PORT);
 });
-
