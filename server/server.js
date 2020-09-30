@@ -9,6 +9,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parser application/json
 app.use(bodyParser.json());
 
+
+
+
+app.get("/", function (req, res) {
+    res.write("hello")
+  });
+
 app.get("/usuario", function (req, res) {
   res.json("get Usuario");
 });
