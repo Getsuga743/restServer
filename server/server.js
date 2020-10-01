@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
+
+console.log(PORT)
 // parse appliaction/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -43,6 +45,6 @@ app.delete("/usuario", function (req, res) {
   res.json("delete Usuario");
 });
 
-app.listen(PORT, () => {
-  console.log("Escuchando puerto: " + PORT);
+app.listen(process.env.PORT, () => {
+  console.log("Escuchando puerto: " + process.env.PORT);
 });
