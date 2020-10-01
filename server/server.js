@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 
 
-console.log(PORT)
+
 // parse appliaction/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
