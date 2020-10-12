@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
-
+const mongoose = require("mongoose");
 
 // parse appliaction/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,35 +15,19 @@ app.get("/", function (req, res) {
   res.redirect("/usuario");
 });
 
-app.get("/usuario", function (req, res) {
-  res.json("get Usuario");
-});
+app.use(require("./routes/usuarios"));
 
-//crear data(registros)
-app.post("/usuario", function (req, res) {
-  //el body es el que va a aparecer cuando el body parser
-  //capte las peticiones
-  let body = req.body;
-  if (body.nombre === undefined) {
-    res.status(400).json({
-      ok: false,
-      mensaje: "El nombres es necesario",
-    });
-  } else {
-    res.status(200);
-    res.json({ persona: body });
+mongoose.connect(
+  process.env.URLDB,
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+  },
+  (err, res) => {
+    if (err) throw err;
+    console.log("Database online");
   }
-});
-
-//actualizar data(registros,similar a post)
-app.put("/usuario/:id", function (req, res) {
-  let id = req.params.id;
-
-  res.json(id);
-});
-app.delete("/usuario", function (req, res) {
-  res.json("delete Usuario");
-});
+);
 
 app.listen(process.env.PORT, () => {
   console.log("Escuchando puerto: " + process.env.PORT);
