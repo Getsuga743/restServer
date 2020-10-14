@@ -44,10 +44,10 @@ app.post("/login", (req, res) => {
       {
         usuario: usuarioDB,
       },
-      "this-is-the-seed",
+      process.env.SEED,
       {
         //30dias
-        expiresIn: 60 * 60 * 24 * 30,
+        expiresIn: process.env.CADUCIDAD_TOKEN,
       }
     );
     res.json({
