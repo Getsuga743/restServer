@@ -11,11 +11,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parser application/json
 app.use(bodyParser.json());
 
+
+
 app.get("/", function (req, res) {
   res.redirect("/usuario");
 });
 
-app.use(require("./routes/usuarios"));
+
+//Global config de rutas s
+
+app.use(require("./routes/index"));
 
 mongoose.connect(
   process.env.URLDB,
@@ -25,7 +30,7 @@ mongoose.connect(
   },
   (err, res) => {
     if (err) throw err;
-    console.log("Database online");
+    console.log("Database online--- "+ process.env.URLDB);
   }
 );
 
