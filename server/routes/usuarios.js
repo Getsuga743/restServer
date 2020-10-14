@@ -3,17 +3,17 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const _ = require("underscore");
 const { Usuario } = require("../models/usuario");
-const { connection } = require("mongoose");
+const { verificaToken, verificaAdmin_Role } = require("../middlewares/authenticaction");
 
 const app = express();
 
-app.get("/usuario", function (req, res) {
+app.get("/usuario", verificaToken, function (req, res) {
   let desde = req.query.desde || 0;
   desde = Number(desde);
   let limite = req.query.limite || 5;
   limite = Number(limite);
 
-  Usuario.find({estado:true}, "nombre email role estado google img")
+  Usuario.find({ estado: true }, "nombre email role estado google img")
     .skip(desde)
     .limit(limite)
     .exec((err, usuarios) => {
@@ -24,7 +24,7 @@ app.get("/usuario", function (req, res) {
         });
       }
 
-      Usuario.count({estado:true}, (err, count) => {
+      Usuario.count({ estado: true }, (err, count) => {
         if (err) {
           console.log(err);
         }
@@ -38,7 +38,7 @@ app.get("/usuario", function (req, res) {
 });
 
 //crear data(registros)
-app.post("/usuario", function (req, res) {
+app.post("/usuario", [verificaToken, verificaAdmin_Role], function (req, res) {
   //el body es el que va a aparecer cuando el body parser
   //capte las peticiones
   let body = req.body;
@@ -64,7 +64,7 @@ app.post("/usuario", function (req, res) {
 });
 
 //actualizar data(registros,similar a post)
-app.put("/usuario/:id", function (req, res) {
+app.put("/usuario/:id", verificaToken, function (req, res) {
   let id = req.params.id;
   let body = _.pick(req.body, ["nombre", "email", "img", "role"]);
 
@@ -88,7 +88,7 @@ app.put("/usuario/:id", function (req, res) {
   );
 });
 
-app.delete("/usuario/:id", function (req, res) {
+app.delete("/usuario/:id", verificaToken, function (req, res) {
   let id = req.params.id;
   let cambiaEstado = { estado: false };
   Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, user) => {
