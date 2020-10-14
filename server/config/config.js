@@ -30,5 +30,5 @@ if (process.env.NODE_ENV === "desarrollo") {
 } else {
   urlDB = process.env.MONGO_URL;
 }
-her;
+
 process.env.URLDB = urlDB;
