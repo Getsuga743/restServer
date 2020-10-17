@@ -2,7 +2,7 @@ require("./config/config");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-
+const path = require("path");
 const mongoose = require("mongoose");
 
 // parse appliaction/x-www-form-urlencoded
@@ -11,12 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parser application/json
 app.use(bodyParser.json());
 
-
-
-app.get("/", function (req, res) {
-  res.redirect("/usuario");
-});
-
+//habilitar el public
+app.use(express.static(path.resolve(__dirname, "../public")));
 
 //Global config de rutas s
 
@@ -30,7 +26,7 @@ mongoose.connect(
   },
   (err, res) => {
     if (err) throw err;
-    console.log("Database online--- "+ process.env.URLDB);
+    console.log("Database online--- " + process.env.URLDB);
   }
 );
 
