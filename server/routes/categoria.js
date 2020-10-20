@@ -127,7 +127,7 @@ app.put("/categoria/:id", verificaToken, (req, res) => {
 //==============================
 
 app.delete("/categoria/:id", verificaToken, verificaAdmin_Role, (req, res) => {
-  //solo un admini puede borrar categorias
+  //solo un admin puede borrar categorias
 
   let id = req.params.id;
 
