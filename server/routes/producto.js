@@ -11,6 +11,31 @@ let Producto = require("../models/producto");
 const usuario = require("../models/usuario");
 
 //==============================
+// Buscar productos por termino
+//==============================
+app.get("/productos/buscar/:termino", verificaToken, (req, res) => {
+  let termino = req.params.termino;
+  let regex = new RegExp(termino, "i")
+  Producto.find({ nombre: regex })
+    .populate("categoria", "nombre")
+    .exec((err, productos) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          err,
+        });
+      }
+      if (!productos) {
+        return res.status(400).json({
+          ok: false,
+          err: { message: "error al cargar los productos, no encontrados" },
+        });
+      } else {
+      }
+    });
+});
+
+//==============================
 // Obtener productos
 //==============================
 
@@ -18,7 +43,6 @@ app.get("/productos", verificaToken, (req, res) => {
   //paginado
   let { desde, limite } = paginado(req);
   //trae todos los productos, populate: usuario categoria
-
   Producto.find({ disponible: true })
     .skip(desde)
     .limit(limite)
@@ -48,6 +72,8 @@ app.get("/productos", verificaToken, (req, res) => {
 app.get("/productos/:id", verificaToken, (req, res) => {
   //paginado
   let id = req.params.id;
+
+  //populate_ usuario categoria
   Producto.findById(id)
     .populate("usuario", "nombre email")
     .populate("categoria", "descripcion")
@@ -68,8 +94,6 @@ app.get("/productos/:id", verificaToken, (req, res) => {
         producto: productoDB,
       });
     });
-
-  //populate_ usuario categoria
 });
 
 //==============================
@@ -77,12 +101,12 @@ app.get("/productos/:id", verificaToken, (req, res) => {
 //==============================
 app.post("/productos", verificaToken, (req, res) => {
   //grabar el usuario, categoria del listado
-  //   nombre:
-  //   precioUni:
+  // nombre:
+  // precioUni:
   // descripcion:
-  //  disponible:
-  //   categoria:
-  //    usuario:
+  // disponible:
+  // categoria:
+  // usuario:
   let body = req.body;
 
   let producto = new Producto({
