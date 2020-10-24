@@ -13,10 +13,12 @@ app.use(bodyParser.json());
 
 //habilitar el public
 app.use(express.static(path.resolve(__dirname, "../public")));
-
+app.use(express.static(path.resolve(__dirname, "../routes")));
 //Global config de rutas s
 
 app.use(require("./routes/index"));
+
+app.use(require("./routes/upload"));
 
 mongoose.connect(
   process.env.URLDB,
